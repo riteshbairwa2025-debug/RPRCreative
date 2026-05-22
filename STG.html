@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake Business Tycoon - Premium Dashboard</title>
+
+<style>
+:root {
+  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1c29 0%, #0e1017 100%);
+  --panel-bg: rgba(30, 34, 54, 0.65);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --accent-gold: #fbbf24;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --glow-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1000px;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  background: linear-gradient(to right, #fff, var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 3D Dashboard Stage Setup */
+.dashboard-stage {
+  transform-style: preserve-3d;
+  transform: rotateX(7deg);
+  transition: transform 0.5s ease;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 20px;
+}
+
+.dashboard-stage:hover {
+  transform: rotateX(2deg) scale(1.01);
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 25px;
+}
+
+@media (max-width: 900px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+  }
+  body { perspective: none; }
+  .dashboard-stage { transform: none !important; }
+}
+
+/* Glassmorphism Panel styles */
+.panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: var(--glow-shadow), inset 0 1px 1px rgba(255,255,255,0.1);
+  transform: translateZ(20px);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.panel:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255,255,255,0.15);
+  transform: translateZ(30px);
+}
+
+/* Typography & Display Metrics */
+.main-balance {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin: 0 0 5px 0;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+}
+
+.status-badge.active-loan {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }
+  100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
+}
+
+.section-title {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+  border-left: 4px solid var(--accent-blue);
+  padding-left: 10px;
+}
+
+/* Corporate Inventory Display */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.inventory-card {
+  background: rgba(0,0,0,0.2);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.inventory-card .count {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.inventory-card .label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+/* Action Button Arrays */
+.btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s ease;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  filter: brightness(1.15);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Professional Color Intentions */
+.btn-loan { background: linear-gradient(135deg, #d97706, #b45309); }
+.btn-repay { background: linear-gradient(135deg, #dc2626, #991b1b); }
+.btn-daily { background: linear-gradient(135deg, #0d9488, #0f766e); }
+.btn-taxi { background: linear-gradient(135deg, #4b5563, #374151); }
+.btn-shop { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+.btn-factory { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+.btn-home { background: linear-gradient(135deg, #db2777, #be185d); }
+.btn-play { background: linear-gradient(135deg, #16a34a, #15803d); width: 100%; font-size: 1.1rem; padding: 14px; }
+.btn-reset { background: transparent; border: 1px solid rgba(239, 68, 68, 0.4); color: var(--accent-red); width: 100%; margin-top: 20px; font-size: 0.8rem; opacity: 0.6; }
+.btn-reset:hover { background: rgba(239, 68, 68, 0.1); opacity: 1; }
+
+/* Canvas and Game Section Styling */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas-wrapper {
+  position: relative;
+  border-radius: 12px;
+  padding: 8px;
+  background: linear-gradient(145deg, #23273a, #151824);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 3px rgba(255,255,255,0.1);
+  margin-top: 15px;
+}
+
+canvas {
+  background: #090a0f;
+  display: block;
+  border-radius: 8px;
+}
+
+#gameInfo {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  min-height: 22px;
+}
+
+.game-meta-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.1), rgba(255,255,255,0));
+  margin: 20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🐍 Snake Business Tycoon</h1>
+<p style="color: var(--text-secondary); margin: 0 0 10px 0; font-size: 0.9rem;">High-Frequency Trading & Corporate Simulation Platform</p>
+
+<div class="dashboard-stage">
+  <div class="grid-layout">
+    
+    <!-- LEFT PANEL: FINANCIALS & OPERATIONS -->
+    <div class="panel">
+      <div class="section-title">Financial Overview</div>
+      <h2 class="main-balance" id="balance">₹1,000</h2>
+      <div class="status-badge" id="loanStatus">No Active Loan</div>
+      
+      <div class="btn-group">
+        <button class="btn-loan" onclick="takeLoan()">Acquire Loan (₹40K)</button>
+        <button class="btn-repay" onclick="repayLoan()">Repay Loan (+Interest)</button>
+      </div>
+      <button class="btn-daily" style="width: 100%;" onclick="dailyReward()">Claim Liquid Daily Dividend</button>
+      
+      <hr>
+      
+      <div class="section-title">Asset Portfolio</div>
+      <div class="inventory-grid">
+        <div class="inventory-card">
+          <div class="count" id="countShops">0</div>
+          <div class="label">Retail Shops</div>
+        </div>
+        <div class="inventory-card">
+          <div class="count" id="countFactories">0</div>
+          <div class="label">Factories</div>
+        </div>
+        <div class="inventory-card">
+          <div class="count" id="countHouses">0</div>
+          <div class="label">Residential</div>
+        </div>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn-shop" onclick="buyShop()">Shop: ₹2L</button>
+        <button class="btn-factory" onclick="buyFactory()">Factory: ₹5L</button>
+      </div>
+      <div class="btn-group">
+        <button class="btn-home" onclick="buyhome()">Home: ₹80K</button>
+        <button class="btn-taxi" onclick="driveTaxi()">drive texi(₹3K)</button>
+      </div>
+      
+      <button class="btn-reset" onclick="resetGame()">Terminate Corporate Entity (Reset Progress)</button>
+    </div>
+    
+    <!-- RIGHT PANEL: GAME OPERATION ENGINE -->
+    <div class="panel game-area">
+      <div class="section-title" style="align-self: flex-start; width: 100%;">Trading Floor Simulator</div>
+      
+      <div class="game-meta-text">
+        <strong>Execution Fee:</strong> ₹800 | <strong>Yield Matrix:</strong> ₹4000 per asset unit processed
+      </div>
+      
+      <button class="btn-play" onclick="startGame()">Initialize Matrix Stream (Play Snake)</button>
+      
+      <div class="canvas-wrapper">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+      </div>
+      
+      <p id="gameInfo">Ready for Engine Spin-Up...</p>
+    </div>
+
+  </div>
+</div>
+<footer class="legal-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="status-indicator"></span> All Systems Operational | Platform v1.0.0
+    </div>
+    <div class="footer-links">
+      <a href="PRIVACY_policy.html">Privacy Policy</a>
+      <a href="terms&condition.html">Terms of Service</a>
+      <a href="corporate-support.html">Corporate Support</a>
+    </div>
+  </div>
+  <p class="financial-disclaimer">
+    <strong>RISK & SIMULATION DISCLAIMER:</strong> Snake Business Tycoon is entirely a gamified fictional simulation. All financial denominations (₹), asset acquisitions, interest models, and loan liabilities represented in this engine are strictly virtual tokens for entertainment purposes. No real currency is processed, stored, or exchanged.
+  </p>
+  <p class="copyright">
+    &copy; 2026 Snake Business Tycoon Inc. Engineered for corporate simulation deployment. All Rights Reserved.
+  </p>
+  <p><pre>  powered by <strong>@ritesh-bairwa439</strong>
+
+  <input type="email" placeholder="riteshbairwa2025@gmail.com"></pre></p>
+</footer>
+<script>
+/* ================= GAME DATA ================= */
+let balance = localStorage.getItem("balance") ? parseInt(localStorage.getItem("balance")) : 1000;
+let loanAmount = localStorage.getItem("loan") ? parseInt(localStorage.getItem("loan")) : 0;
+let shops = localStorage.getItem("shops") ? parseInt(localStorage.getItem("shops")) : 0;
+let factories = localStorage.getItem("factories") ? parseInt(localStorage.getItem("factories")) : 0;
+let home = localStorage.getItem("home") ? parseInt(localStorage.getItem("home")) : 0;
+
+let loanStartTime = localStorage.getItem("loanStartTime") ? parseInt(localStorage.getItem("loanStartTime")) : null;
+let penaltyApplied = localStorage.getItem("penaltyApplied") ? JSON.parse(localStorage.getItem("penaltyApplied")) : false;
+
+let loanTimerInterval;
+let entryFee = 800;
+
+/* ================= SAVE & DISPLAY ================= */
+function saveGame(){
+  localStorage.setItem("balance", balance);
+  localStorage.setItem("loan", loanAmount);
+  localStorage.setItem("shops", shops);
+  localStorage.setItem("factories", factories);
+  localStorage.setItem("home", home);
+  localStorage.setItem("loanStartTime", loanStartTime);
+  localStorage.setItem("penaltyApplied", penaltyApplied);
+}
+
+function updateDisplay(){
+  document.getElementById("balance").innerText = "₹" + balance.toLocaleString('en-IN');
+
+  const loanEl = document.getElementById("loanStatus");
+  if(loanAmount > 0){
+    loanEl.innerText = "Liability Exposure: ₹" + loanAmount.toLocaleString('en-IN');
+    loanEl.className = "status-badge active-loan";
+  } else {
+    loanEl.innerText = "Debt Free Framework";
+    loanEl.className = "status-badge";
+  }
+
+  document.getElementById("countShops").innerText = shops;
+  document.getElementById("countFactories").innerText = factories;
+  document.getElementById("countHouses").innerText = home;
+
+  saveGame();
+}
+
+/* ================= LOAN SYSTEM WITH PENALTY ================= */
+function takeLoan(){
+  if(loanAmount > 0) return alert("Risk Engine Block: Already processing an active leverage plan!");
+
+  loanAmount = 40000;
+  balance += 40000;
+
+  loanStartTime = Date.now();
+  penaltyApplied = false;
+
+  startLoanTimer();
+  updateDisplay();
+}
+
+function repayLoan(){
+  if(loanAmount == 0) return alert("No outstanding corporate balance sheet debt detected!");
+  let totalRepay = loanAmount + 15000;
+  if(balance < totalRepay) return alert("Liquidity Error: Insufficient capital to settle base debt + ₹15,000 regulatory processing interest!");
+
+  balance -= totalRepay;
+  loanAmount = 0;
+  loanStartTime = null;
+  penaltyApplied = false;
+
+  clearInterval(loanTimerInterval);
+  updateDisplay();
+}
+
+function startLoanTimer(){
+  clearInterval(loanTimerInterval);
+
+  loanTimerInterval = setInterval(function(){
+    if(!loanStartTime || loanAmount == 0) return;
+
+    let now = Date.now();
+    let passed = now - loanStartTime;
+    let totalDuration = 1800000; // 30 minutes
+    let remaining = totalDuration - passed; 
+
+    if(remaining <= 0 && !penaltyApplied){
+      loanAmount += 100000; 
+      penaltyApplied = true;
+      alert("⛔ Liquidity Deadline Breach! Restructuring penalty of ₹100,000 processed to ledger.");
+      updateDisplay();
+    }
+
+    if(remaining > 0){
+      let min = Math.floor(remaining / 60000);
+      let sec = Math.floor((remaining % 60000) / 1000);
+      document.getElementById("loanStatus").innerText =
+        "Liability: ₹" + loanAmount.toLocaleString('en-IN') + " | Refinance Deadline: " + min + "m " + sec + "s";
+    }
+  }, 1000);
+}
+
+if(loanAmount > 0 && loanStartTime){
+  startLoanTimer();
+}
+
+/* ================= BUSINESS SYSTEM ================= */
+function buyShop(){
+  if(balance < 200000) return alert("M&A Block: Commercial retail acquisition requires capital reserves of ₹5,000,000");
+  balance -= 200000;
+  shops++;
+  updateDisplay();
+}
+
+function buyFactory(){
+  if(balance < 500000) return alert("M&A Block: Production plant asset line deployment requires capital reserves of ₹2,000,000");
+  balance -= 500000;
+  factories++;
+  updateDisplay();
+}
+
+function driveTaxi(){
+  balance += 3000;
+  updateDisplay();
+}
+
+function buyhome(){
+  if(balance < 80000) return alert("M&A Block: High-density real estate acquisition requires capital reserves of ₹80,000");
+  balance -= 80000;
+  home++;
+  updateDisplay();
+}
+
+/* Passive yield tick generated down to 10s intervals */
+setInterval(function(){
+  let income = (shops * 10000) + (factories * 20000) + (home * 5000);
+  if(income > 0){
+    balance += income;
+    updateDisplay();
+  }
+}, 60000); 
+
+/* ================= RESET PROGRESS SYSTEM ================= */
+function resetGame() {
+  if(confirm("Confirm asset write-off? This completely liquidates the enterprise architecture, purging all global properties and accounts!")) {
+    clearInterval(loanTimerInterval);
+    clearInterval(gameInterval);
+    
+    localStorage.clear();
+    
+    balance = 1000;
+    loanAmount = 0;
+    shops = 0;
+    factories = 0;
+    home = 0;
+    loanStartTime = null;
+    penaltyApplied = false;
+    
+    ctx.fillStyle = "#090a0f";
+    ctx.fillRect(0, 0, 400, 400);
+    document.getElementById("gameInfo").innerText = "Corporate architecture factory reset finalized.";
+    
+    updateDisplay();
+  }
+}
+
+/* ================= DAILY REWARD ================= */
+function dailyReward(){
+  let today = new Date().toDateString();
+  if(localStorage.getItem("daily") == today)
+    return alert("Compliance Exception: Daily grant payout cap reached for current business period.");
+
+  balance += 2000;
+  localStorage.setItem("daily", today);
+  updateDisplay();
+}
+
+/* ================= SNAKE GAME ================= */
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let snake, food, dx, dy, score, gameInterval;
+let box = 20;
+
+function startGame(){
+  if(balance < entryFee) return alert("System Access Denied: Transaction gateway needs minimum ₹100 clearing escrow fee.");
+  balance -= entryFee;
+  updateDisplay();
+
+  snake = [{x: 200, y: 200}];
+  dx = box; 
+  dy = 0;
+  score = 0;
+
+  spawnFood();
+  clearInterval(gameInterval);
+  gameInterval = setInterval(drawGame, 130); // Accelerated engine speed slightly for better responsiveness
+  document.getElementById("gameInfo").innerText = "Feed running... Synchronize matrices.";
+}
+
+function spawnFood(){
+  food = {
+    x: Math.floor(Math.random() * 20) * box,
+    y: Math.floor(Math.random() * 20) * box
+  };
+}
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "ArrowUp" && dy == 0){dx = 0; dy = -box;}
+  if(e.key === "ArrowDown" && dy == 0){dx = 0; dy = box;}
+  if(e.key === "ArrowLeft" && dx == 0){dx = -box; dy = 0;}
+  if(e.key === "ArrowRight" && dx == 0){dx = box; dy = 0;}
+});
+
+function drawGame(){
+  // Premium canvas redraw base
+  ctx.fillStyle = "#090a0f";
+  ctx.fillRect(0, 0, 400, 400);
+
+  // Structural Grid Mesh Overlays for high-tech aesthetic
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.02)";
+  for(let x=0; x<400; x+=box) { ctx.strokeRect(x, 0, box, 400); }
+  for(let y=0; y<400; y+=box) { ctx.strokeRect(0, y, 400, box); }
+
+  // Draw the snake with clean modern neon hues and subtle interior padding
+  for(let i = 0; i < snake.length; i++){
+    ctx.fillStyle = (i == 0) ? "#34d399" : "#059669"; // Neon emerald hues
+    ctx.fillRect(snake[i].x + 1, snake[i].y + 1, box - 2, box - 2);
+  }
+
+  // Draw modern glowing target nodes
+  ctx.fillStyle = "#f43f5e"; // Bright cyberpunk pink/red 
+  ctx.shadowColor = "#f43f5e";
+  ctx.shadowBlur = 4;
+  ctx.fillRect(food.x + 2, food.y + 2, box - 4, box - 4);
+  ctx.shadowBlur = 0; // Clear immediately for system engine speed optimization
+
+  let headX = snake[0].x + dx;
+  let headY = snake[0].y + dy;
+
+  if(headX == food.x && headY == food.y){
+    score++;
+    spawnFood();
+  } else {
+    snake.pop();
+  }
+
+  let newHead = {x: headX, y: headY};
+
+  if(headX < 0 || headY < 0 || headX >= 400 || headY >= 400 || collision(newHead)){
+    endGame();
+    return;
+  }
+
+  snake.unshift(newHead);
+}
+
+function collision(head){
+  for(let i = 0; i < snake.length; i++){
+    if(head.x == snake[i].x && head.y == snake[i].y)
+      return true;
+  }
+  return false;
+}
+
+function endGame(){
+  clearInterval(gameInterval);
+  let reward = score * 500;
+  balance += reward;
+  document.getElementById("gameInfo").innerHTML =
+    "<span style='color: var(--accent-red);'>Session Terminated!</span> Yield Matrix Score: " + score + " | <span style='color: var(--accent-green);'>+₹" + reward.toLocaleString('en-IN') + " Credited</span>";
+  updateDisplay();
+}
+
+// Global initialization
+updateDisplay();
+</script>
+</body>
+</html>

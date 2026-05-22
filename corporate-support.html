@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support & Help Center - Snake Business Tycoon</title>
+<style>
+:root {
+  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1c29 0%, #0e1017 100%);
+  --panel-bg: rgba(30, 34, 54, 0.65);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --accent-gold: #fbbf24;
+  --accent-blue: #3b82f6;
+  --glow-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  --input-bg: rgba(14, 16, 23, 0.6);
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 40px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.support-container {
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: var(--glow-shadow);
+  box-sizing: border-box;
+}
+
+h1 { color: #fff; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 5px;}
+.subtitle { color: var(--text-secondary); text-align: center; font-size: 0.95rem; margin-bottom: 30px; }
+h2 { color: var(--accent-gold); border-left: 4px solid var(--accent-blue); padding-left: 10px; margin-top: 40px; text-transform: uppercase; font-size: 1.1rem;}
+p { line-height: 1.6; color: var(--text-primary); font-size: 0.95rem; }
+
+/* FAQ Accordion Styling */
+.faq-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px 0;
+}
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.2s;
+}
+.faq-question:hover {
+  color: var(--accent-gold);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.faq-answer p {
+  margin: 10px 0 0 0;
+  color: var(--text-secondary);
+}
+.faq-icon {
+  font-weight: bold;
+  color: var(--accent-blue);
+  transition: transform 0.2s;
+}
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+.faq-item.active .faq-answer {
+  max-height: 150px; /* Adjust if answer text is exceptionally long */
+}
+
+/* Form Layout Styling */
+.form-group {
+  margin-bottom: 20px;
+}
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+input[type="text"], input[type="email"], textarea {
+  width: 100%;
+  padding: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Buttons */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-submit:hover { opacity: 0.9; }
+
+.btn-back {
+  display: inline-block; padding: 12px 24px; background: rgba(255,255,255,0.05);
+  color: var(--text-secondary); text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 20px;
+  border: 1px solid var(--panel-border); transition: all 0.2s;
+}
+.btn-back:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.success-msg {
+  display: none;
+  color: #10b981;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<h1>Support Center</h1>
+<div class="subtitle">Snake Business Tycoon Corporate Help Desk</div>
+
+<div class="support-container">
+  
+  <h2>Frequently Asked Questions</h2>
+  
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>How do I save my game progress?</span>
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-answer">
+      <p>Your progress is automatically saved to your web browser's local cache storage continuously. No manual saving or accounts are required.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>I lost my tycoon assets and balance. Can I get them back?</span>
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-answer">
+      <p>Because your data is stored locally on your physical machine, clearing your browser history, clear cookies, or running system cleaning software will delete your local file. We do not store data on server databases and cannot recover lost progress.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>The game screen is black or won't load. What do I do?</span>
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-answer">
+      <p>Ensure your internet browser is updated to the latest version and has JavaScript enabled. Try hard-refreshing your browser application (Ctrl + F5 or Cmd + Shift + R).</p>
+    </div>
+  </div>
+
+  <h2>Contact Corporate Support</h2>
+  <p style="color: var(--text-secondary); margin-bottom: 25px;">Have bugs to report, partnership proposals, or structural inquiries? Submit a support ticket directly below.</p>
+  
+  <form id="supportForm">
+    <div class="form-group">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" required placeholder="e.g., John Doe">
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Corporate/Personal Email Address</label>
+      <input type="email" id="email" required placeholder="name@domain.com">
+    </div>
+    
+    <div class="form-group">
+      <label for="message">Detailed Inquiry Message</label>
+      <textarea id="message" required placeholder="Describe your bug or business proposal explicitly..."></textarea>
+    </div>
+    
+    <button type="submit" class="btn-submit">Submit Support Ticket</button>
+    <div id="successMsg" class="success-msg">✓ Ticket submitted successfully! Our team will respond within 48 business hours.</div>
+  </form>
+  
+  <hr style="border:0; height:1px; background:rgba(255,255,255,0.1); margin:40px 0 20px 0;">
+  
+  <div style="text-align: center;">
+    <a href="STG.html" class="btn-back">Return to Game Hub</a>
+  </div>
+</div>
+
+<script>
+// JavaScript for Interactive Accordion Functionality
+document.querySelectorAll('.faq-question').forEach(item => {
+  item.addEventListener('click', () => {
+    const parent = item.parentElement;
+    
+    // Toggle active state on clicked item
+    parent.classList.toggle('active');
+    
+    // Optional: Close other items when one opens
+    document.querySelectorAll('.faq-item').forEach(child => {
+      if (child !== parent) {
+        child.classList.remove('active');
+      }
+    });
+  });
+});
+
+// JavaScript for Form Mock Handling
+document.getElementById('supportForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const successMessage = document.getElementById('successMsg');
+  successMessage.style.display = 'block';
+  
+  // Clear fields
+  this.reset();
+  
+  // Fade message out after 5 seconds
+  setTimeout(() => {
+    successMessage.style.display = 'none';
+  }, 5000);
+});
+</script>
+
+</body>
+</html>
